@@ -1,3 +1,3 @@
 module EveIRCInstaller
-  VERSION = "0.1.0"
+  VERSION = "1.0a1.02"
 end
