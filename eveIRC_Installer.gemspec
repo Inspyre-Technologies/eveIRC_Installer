@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
                           version of eveIRC bot}
   spec.homepage    = "https://github.com/Inspyre-Technologies/eveIRC_Installer"
 
-  spec.metadata["allowed_push_host"] = "https://rubygems.org"
+  spec.metadata["allowed_push_host"] = "https://rubygems.pkg.github.com/"
 
   spec.metadata["homepage_uri"]    = spec.homepage
   spec.metadata["source_code_uri"] = spec.homepage

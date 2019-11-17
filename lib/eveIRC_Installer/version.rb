@@ -6,7 +6,7 @@
 #
 # @see EveIRCInstaller#Version
 module EveIRCInstaller
-  VERSION     = "1.0a1.03"
+  VERSION     = "1.0a1.04"
   TARGET      = '6.10a'
   PRE_RELEASE = true
 end
