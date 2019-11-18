@@ -32,7 +32,7 @@ module EveIRCInstaller
         #   @err_buff << err if err
         # end
 
-        out, err = cmd.run('ping -c 25 google.com', :out => 'output.log')
+        out, err = cmd.run('ping -c 5 google.com', :out => 'output.log')
 
         puts "OUT>> #{out}"
         puts "ERR>> #{err}"
@@ -46,15 +46,15 @@ module EveIRCInstaller
         # end
         # threads.each(&:join)
 
-        file = File.open(Dir.pwd + '../logs/' + Time.now.to_f.to_s.gsub!('.', '-'), @cmd_buff.join)
-        file.write @err_buff
+        filename = Time.now.to_f.to_s.gsub!('.', '') + '.log'
+        file     = file_handler
+        begin
+          file_handler.append_to_file(File.dirname(__FILE__) + '/logs/' + filename, @cmd_buff)
+        rescue TTY::File::InvalidPathError
+          file_handler.create_file(File.dirname(__FILE__) + '/logs/' + filename, 'Logging started -- ' + Time.now.to_s)
+        end
 
         p @cmd_buff
-
-        res = [@cmd_buff, @err_buff]
-        res.each do |content|
-          File.write(Dir.pwd + '../logs/' + Time.now.to_f.to_s.gsub!('.', '-'), content)
-        end
 
         p @options
         if @options[:verbose]

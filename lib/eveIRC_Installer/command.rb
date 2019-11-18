@@ -38,6 +38,12 @@ module EveIRCInstaller
       TTY::Cursor
     end
 
+    def file_handler
+      require 'tty-file'
+      TTY::File
+
+    end
+
     # Open a file or text in the user's preferred editor
     #
     # @see http://www.rubydoc.info/gems/tty-editor
