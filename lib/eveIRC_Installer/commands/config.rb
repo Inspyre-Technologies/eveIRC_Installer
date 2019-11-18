@@ -46,15 +46,14 @@ module EveIRCInstaller
         # end
         # threads.each(&:join)
 
-        file = File.open('res.log', 'a')
-        file.write @cmd_buff
+        file = File.open(Dir.pwd + '../logs/' + Time.now.to_f.to_s.gsub!('.', '-'), @cmd_buff.join)
         file.write @err_buff
 
         p @cmd_buff
 
         res = [@cmd_buff, @err_buff]
         res.each do |content|
-          File.write('res.log', content)
+          File.write(Dir.pwd + '../logs/' + Time.now.to_f.to_s.gsub!('.', '-'), content)
         end
 
         p @options
