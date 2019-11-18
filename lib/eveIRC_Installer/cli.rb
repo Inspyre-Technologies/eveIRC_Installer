@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'thor'
+require 'eveIRC_Installer'
 # @author Taylor-Jayde Blackstone <t.blackstone@inspyre.tech>
 # @since 1.0
 #

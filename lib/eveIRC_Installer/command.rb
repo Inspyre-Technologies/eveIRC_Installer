@@ -108,6 +108,11 @@ module EveIRCInstaller
       TTY::Which.which(*args)
     end
 
+    def logger
+      require 'tty-logger'
+      TTY::Logger
+    end
+
     # Check if executable exists
     #
     # @see http://www.rubydoc.info/gems/tty-which
