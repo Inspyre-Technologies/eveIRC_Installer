@@ -18,11 +18,28 @@ module EveIRCInstaller
     # Create and map the verbose option
     class_option :verbose, aliases: '-V', type: :boolean, default: false, desc: 'Run in verbose output mode.'
     # Create and map the log option
-    class_option :log, aliases: '-L', type: :boolean, default: true, desc: 'Run with logging enabled.'
+    class_option :log,
+                 aliases: '-L',
+                 type:    :boolean,
+                 default: true, desc: 'Run with logging enabled.'
     # Create and map the quiet option
-    class_option :quiet, aliases: '-q', type: :boolean, default: false, desc: 'Tell program not to output any'\
-                                                                                    ' output unless an error occurrs'\
-                                                                                    ' or user-input is required.'
+    class_option :quiet,
+                 aliases: '-q',
+                 type:    :boolean,
+                 default: false,
+                 desc:    'Tell program not to output any output unless an error'\
+                       ' occurs or user-input is required.'
+    # Create and map an option for omitting excessive data from
+    # the logs
+    class_option :debug,
+                 aliases: %w[
+                              -d
+                              --debug
+                            ],
+                 type:    :boolean,
+                 default: false,
+                 desc:    'Indicates the users desire to include debug information'\
+                       ' in the logs.'
     map %w(--verbose -V) => :verbose
 
     desc 'version', 'eveIRC_Installer version'

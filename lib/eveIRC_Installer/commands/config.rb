@@ -3,66 +3,55 @@
 require_relative '../command'
 
 module EveIRCInstaller
+  LOG_MAN = Helpers::LogMan.new
   module Commands
     class Config < EveIRCInstaller::Command
+      attr_accessor :logger
+
       def initialize(file, overwrite, options)
         @file      = file
         @overwrite = overwrite
         @options   = options
-        @logger = logger.new do |conf|
-          conf.handlers = [
-            [EveIRCInstaller::Helpers::Logger::Handlers::MainHandler, label: 'default_handler'],
-            [:stream, output: File.open('errors.log', 'a'), level: :info],
-            [:console, output: $stderr, level: :error]
-          ]
-        end
+        @logger    = LOG_MAN.logger
+        @network   = EveIRCInstaller::Helpers::Environment::Network.new
 
       end
 
       def execute(input: $stdin, output: $stdout)
-        # Command logic goes here ...
-        p @logger.inspect
-        output.puts "OK"
-        cmd = command
-        @cmd_buff ||= [] unless @cmd_buff
-        @err_buff ||= [] unless @err_buff
+        @logger.info 'Received call to start configuration for eveIRC Bot installer!'
+        @logger.wait 'Checking network...'
+        @network.check
+        @logger.wait 'Starting command class...'
+        cmd = command(printer: :null)
         @logger.success 'Started Command class.'
-        # cmd.run 'ping -c 10 google.com' do |out, err|
-        #   @cmd_buff << out if out
-        #   @err_buff << err if err
-        # end
 
-        out, err = cmd.run('ping -c 5 google.com', :out => 'output.log')
-
-        puts "OUT>> #{out}"
-        puts "ERR>> #{err}"
-
-        # threads = []
-        # 3.times do |i|
-        #   th = Thread.new do
-        #     10.times { cmd.run 'ping -c 1 google.com' }
-        #   end
-        #   threads << th
-        # end
-        # threads.each(&:join)
-
-        filename = Time.now.to_f.to_s.gsub!('.', '') + '.log'
-        file     = file_handler
-        begin
-          file_handler.append_to_file(File.dirname(__FILE__) + '/logs/' + filename, @cmd_buff)
-        rescue TTY::File::InvalidPathError
-          file_handler.create_file(File.dirname(__FILE__) + '/logs/' + filename, 'Logging started -- ' + Time.now.to_s)
+        do_test = cmd.run!('ping -c 25 google.com') do |out, err|
+          @logger.debug(out) if out
+          @logger.error(err) if err
         end
 
-        p @cmd_buff
-
-        p @options
-        if @options[:verbose]
-          p 'I am verbose'
+        if do_test.failure?
+          @logger.warn 'Ping test failed!'
         else
-          p 'I am not verbose'
+          @logger.success 'Ping test successful!'
         end
+
       end
+
+      def run_test
+        require 'tty-spinner'
+        spinner = TTY::Spinner.new "[:spinner] Checking connectivity... ", format: :arrow_pulse
+        spinner.auto_spin
+        do_test = cmd.run!('ping -c 25 google.com') do |out, err|
+          @logger.debug(out) if out
+          @logger.error(err) if err
+        end
+        if do_test.failure?
+          raise NetworkError::DNSError
+        end
+        spinner.stop('Finished DNS checking!')
+      end
+
     end
   end
 end
