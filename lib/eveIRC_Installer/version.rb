@@ -6,7 +6,7 @@
 #
 # @see EveIRCInstaller#Version
 module EveIRCInstaller
-  VERSION     = '1.0a1.09'.freeze
+  VERSION     = '1.0a1.10'.freeze
   TARGET      = '6.10a'.freeze
   PRE_RELEASE = true
 end
