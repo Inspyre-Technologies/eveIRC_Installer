@@ -1,8 +1,12 @@
 module EveIRCInstaller
   module Helpers
     class LogMan
+
+      # A library for formatting the caller's name
       module PrettifyCaller
 
+        # @return [String] A string containing a readable version
+        #   of the name of the caller. For logging
         def self.do_format(target = self)
           f_caller = if target == self
                        to_s

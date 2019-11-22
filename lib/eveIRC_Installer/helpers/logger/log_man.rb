@@ -5,6 +5,13 @@ module EveIRCInstaller
     #
     # A class to hold the program's logger object. Will be used to pass
     # info to the user at varying degrees of importance.
+    #
+    # @!attribute pretty_caller
+    #   @return [String] A string containing a more asthetic/readable copy
+    #     of the caller's name
+    #
+    # @!attribute logger
+    #  @return [Object] An object containing an initialized logger
     class LogMan
       attr_accessor :logger, :pretty_caller
       require 'tty-file'
@@ -47,6 +54,7 @@ module EveIRCInstaller
         @logger = TTY::Logger.new(fields: { app: 'eveIRC_Installer' })
       end
 
+      # @return [Object] A file IO stream for writing log output to
       def create_file
         h_date = @time.strftime('%m/%d/%Y')
         h_time = @time.strftime('%H:%M:%S')

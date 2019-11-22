@@ -35,7 +35,7 @@ module EveIRCInstaller
       def execute(input: $stdin, output: $stdout)
         Logger.info 'Received call to start configuration for eveIRC Bot installer!'
         Logger.wait 'Checking network...'
-        @network.check
+        @network.do_check
         Logger.wait 'Starting command class...'
         cmd = command(printer: :null)
         Logger.success 'Started Command class.'
