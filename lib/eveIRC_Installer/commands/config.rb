@@ -3,54 +3,69 @@
 require_relative '../command'
 
 module EveIRCInstaller
-  LOG_MAN = Helpers::LogMan.new
   module Commands
+    # @author Taylor-Jayde Blackstone <t.blackstone@inspyre.tech>
+    # @since 1.0
+    #
+    # Class for the config command for the program
+    #
+    # @!attribute logger
+    #   @return [Object] This contains a logger object
+    # @!attribute options
+    #   @return [Hash] A hash of the current state of
+    #     options within the program
     class Config < EveIRCInstaller::Command
-      attr_accessor :logger
+      attr_accessor :options
 
+      # Initialize the class and it's attributes
       def initialize(file, overwrite, options)
-        @file      = file
-        @overwrite = overwrite
-        @options   = options
-        @logger    = LOG_MAN.logger
-        @network   = EveIRCInstaller::Helpers::Environment::Network.new
 
+        @file        = file
+        @overwrite   = overwrite
+        @options     = options
+        p @options
+        @network     = EveIRCInstaller::Helpers::Environment::Network.new
+
+        p 'my name is ' + EveIRCInstaller::PrettyName.do_format(self)
       end
 
+      # Execute the config command for EveIRCInstaller. This will set off a
+      # chain of checks and environment preparers with the goal of making
+      # this process more seamless for the user.
       def execute(input: $stdin, output: $stdout)
-        @logger.info 'Received call to start configuration for eveIRC Bot installer!'
-        @logger.wait 'Checking network...'
+        Logger.info 'Received call to start configuration for eveIRC Bot installer!'
+        Logger.wait 'Checking network...'
         @network.check
-        @logger.wait 'Starting command class...'
+        Logger.wait 'Starting command class...'
         cmd = command(printer: :null)
-        @logger.success 'Started Command class.'
+        Logger.success 'Started Command class.'
 
-        do_test = cmd.run!('ping -c 25 google.com') do |out, err|
-          @logger.debug(out) if out
-          @logger.error(err) if err
-        end
-
-        if do_test.failure?
-          @logger.warn 'Ping test failed!'
-        else
-          @logger.success 'Ping test successful!'
-        end
+        # do_test = cmd.run!('ping -c 25 google.com') do |out, err|
+        #   Logger.debug(out) if out
+        #   Logger.error(err) if err
+        # end
+        #
+        # if do_test.failure?
+        #   Logger.warn 'Ping test failed!'
+        # else
+        #   Logger.success 'Ping test successful!'
+        # end
 
       end
 
-      def run_test
-        require 'tty-spinner'
-        spinner = TTY::Spinner.new "[:spinner] Checking connectivity... ", format: :arrow_pulse
-        spinner.auto_spin
-        do_test = cmd.run!('ping -c 25 google.com') do |out, err|
-          @logger.debug(out) if out
-          @logger.error(err) if err
-        end
-        if do_test.failure?
-          raise NetworkError::DNSError
-        end
-        spinner.stop('Finished DNS checking!')
-      end
+      # def run_test
+      #   require 'tty-spinner'
+      #   spinner = TTY::Spinner.new "[:spinner] Checking connectivity... ", format: :arrow_pulse
+      #   spinner.auto_spin
+      #   do_test = cmd.run!('ping -c 25 google.com') do |out, err|
+      #     Logger.debug(out) if out
+      #     Logger.error(err) if err
+      #   end
+      #   if do_test.failure?
+      #     raise NetworkError::DNSError
+      #   end
+      #   spinner.stop('Finished DNS checking!')
+      # end
 
     end
   end

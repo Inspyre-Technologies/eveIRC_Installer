@@ -2,11 +2,18 @@
 
 require 'thor'
 require 'eveIRC_Installer'
+
 # @author Taylor-Jayde Blackstone <t.blackstone@inspyre.tech>
 # @since 1.0
 #
 # Library for the eveIRC Installer application
 module EveIRCInstaller
+
+  # @author Taylor-Jayde Blackstone <t.blackstone@inspyre.tech>
+  # @since 1.0
+  #
+  # @see Thor#new
+  #
   # Handle the application command line parsing
   # and the dispatch to various command objects
   #
@@ -16,31 +23,52 @@ module EveIRCInstaller
     Error = Class.new(StandardError)
 
     # Create and map the verbose option
-    class_option :verbose, aliases: '-V', type: :boolean, default: false, desc: 'Run in verbose output mode.'
+    class_option(
+      :verbose,
+      aliases: '-V',
+      type: :boolean,
+      default: false,
+      desc: 'Run in verbose output mode.'
+    )
+
     # Create and map the log option
-    class_option :log,
-                 aliases: '-L',
-                 type:    :boolean,
-                 default: true, desc: 'Run with logging enabled.'
+    class_option(
+      :log,
+      aliases: '-L',
+      type: :boolean,
+      default: true, desc: 'Run with logging enabled.'
+    )
     # Create and map the quiet option
-    class_option :quiet,
-                 aliases: '-q',
-                 type:    :boolean,
-                 default: false,
-                 desc:    'Tell program not to output any output unless an error'\
-                       ' occurs or user-input is required.'
+    class_option(
+      :quiet,
+      aliases: '-q',
+      type: :boolean,
+      default: false,
+      desc: 'Tell program not to output any output unless an error'\
+              ' occurs or user-input is required.'
+    )
+
     # Create and map an option for omitting excessive data from
     # the logs
-    class_option :debug,
-                 aliases: %w[
-                              -d
-                              --debug
-                            ],
-                 type:    :boolean,
-                 default: false,
-                 desc:    'Indicates the users desire to include debug information'\
-                       ' in the logs.'
-    map %w(--verbose -V) => :verbose
+    class_option(
+      :debug,
+      aliases: %w[-d --debug],
+      type: :boolean,
+      default: false,
+      desc: 'Indicates the users desire to include debug information'\
+              ' in the logs.'
+    )
+
+    # Create and map an option for instructing the program if
+    # it should write logs to the disk
+    class_option(
+      :write,
+      aliases: %w[-w --write],
+      type: :boolean,
+      default: true,
+      desc: 'Indicates if the program should write the logfile to the disk'
+    )
+    map %w[--verbose -V] => :verbose
 
     desc 'version', 'eveIRC_Installer version'
 
@@ -53,21 +81,21 @@ module EveIRCInstaller
       puts "v#{EveIRCInstaller::VERSION}"
     end
 
-    map %w(--version -v) => :version
+    map %w[--version -v] => :version
 
     desc 'config [FILE] ', 'Starts the workflow that will create your bot\'s config file'
     method_option :help, aliases: '-h', type: :boolean,
-                  desc:           'Display usage information'
+                         desc: 'Display usage information'
 
     method_option :overwrite, aliases: '-o', type: :boolean,
-                  desc:                'Overwrite existing config file without asking.'
+                              desc: 'Overwrite existing config file without asking.'
 
 
     method_option :overwrite, aliases: '-O', type: :boolean,
-                  desc:                'Test matching file in the config directory.'
+                              desc: 'Test matching file in the config directory.'
 
     method_option :config_plugins, aliases: '-P', type: :boolean,
-                  desc:                     'Install eveIRC Bot & plugins. If this is set to false PlugMan will not come up'\
+                                   desc: 'Install eveIRC Bot & plugins. If this is set to false PlugMan will not come up'\
                                      ' during installation.'
 
     # @param file [String] Path where eveIRC Installer can find a
@@ -78,7 +106,7 @@ module EveIRCInstaller
     #   any matching file present in it's config/ directory without
     #   confirming. True | False
     #
-    # @param test-file [Boolean] Should only be used in conjunction
+    # @param file [Boolean] Should only be used in conjunction
     #   with the --file=FILEPATH argument otherwise it will fallback
     #   to testing any matching file in it's config/ dir
     #

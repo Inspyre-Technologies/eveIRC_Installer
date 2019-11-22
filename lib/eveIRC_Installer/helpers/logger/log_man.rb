@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module EveIRCInstaller
   module Helpers
     # @author Taylor-Jayde  Blackstone <t.blackstone@inspyre.tech>
@@ -8,12 +6,15 @@ module EveIRCInstaller
     # A class to hold the program's logger object. Will be used to pass
     # info to the user at varying degrees of importance.
     class LogMan
-      attr_accessor :logger
+      attr_accessor :logger, :pretty_caller
       require 'tty-file'
       require 'tty-logger'
       require 'eveIRC_Installer/helpers/logger/prettify_caller'
 
+
+
       def initialize
+        @pretty_caller = PrettifyCaller
         @time        = Time.now
         h_date       = @time.strftime('%m/%d/%Y')
         h_time       = @time.strftime('%H:%M:%S')

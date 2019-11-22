@@ -2,6 +2,9 @@ require "eveIRC_Installer/version"
 require 'eveIRC_Installer/helpers/helpers'
 
 module EveIRCInstaller
+  log_man = EveIRCInstaller::Helpers::LogMan.new
+  PrettyName = log_man.pretty_caller
+  Logger = log_man.logger
 
   class Error < StandardError; end
 

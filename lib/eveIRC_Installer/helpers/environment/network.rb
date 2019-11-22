@@ -3,20 +3,24 @@ module EveIRCInstaller
     class Environment
       class Network
 
+
         def initialize(checker: nil, color: true)
+
+          @pretty_name = EveIRCInstaller::Helpers::LogMan::PrettifyCaller
+          @pretty_name = @pretty_name.do_format(self)
 
           options = {
             checker: checker,
             color:   color,
-            caller:  caller
+            caller:  self
           }
-          logger  = EveIRCInstaller::LOG_MAN.logger
-          @logger = logger
+          name = self.to_s
+          p name
         end
 
         def check
 
-          @logger.info 'Received call from ' + "#{caller[0]}"
+          EveIRCInstaller::Logger.info 'Received call'
 
 
         end

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    eveIRC_Installer (1.0a1.07)
+    eveIRC_Installer (1.0a1.08)
       pastel (~> 0.7.2)
       thor (~> 0.20.0)
       tty-box (~> 0.4.1)
