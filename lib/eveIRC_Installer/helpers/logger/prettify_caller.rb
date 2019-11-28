@@ -17,7 +17,7 @@ module EveIRCInstaller
             f_caller[0].gsub!('#<', '')
             f_caller[0].gsub!('::', ' ⇉ ')
           end
-          p f_caller[0]
+          return f_caller[0]
         end
 
 

@@ -23,20 +23,19 @@ module EveIRCInstaller
         @file        = file
         @overwrite   = overwrite
         @options     = options
-        p @options
         @network     = EveIRCInstaller::Helpers::Environment::Network.new
+        @pretty_name = EveIRCInstaller::PrettyName.do_format(self)
 
-        p 'my name is ' + EveIRCInstaller::PrettyName.do_format(self)
       end
 
       # Execute the config command for EveIRCInstaller. This will set off a
       # chain of checks and environment preparers with the goal of making
       # this process more seamless for the user.
       def execute(input: $stdin, output: $stdout)
-        Logger.info 'Received call to start configuration for eveIRC Bot installer!'
-        Logger.wait 'Checking network...'
+        Logger.info('Received call to start configuration for eveIRC Bot installer!', who_rang: @pretty_name)
+        Logger.wait('Checking network...', who_rang: @pretty_name)
         @network.do_check
-        Logger.wait 'Starting command class...'
+        Logger.wait('Starting command class...', who_rang: @pretty_name)
         cmd = command(printer: :null)
         Logger.success 'Started Command class.'
 

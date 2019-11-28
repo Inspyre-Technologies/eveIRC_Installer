@@ -7,19 +7,16 @@ module EveIRCInstaller
       #
       # Class for information about the network environment
       class Network
-
-
+  
         def initialize(checker: nil, color: true)
-          Logger.debug "Received call from #{caller.class}"
-
           @pretty_name = EveIRCInstaller::PrettyName.do_format(self)
+          Logger.debug("Received call from #{caller.class}", { who_rang: @pretty_name })
 
-          options = {
-            checker: checker,
-            color:   color,
-            caller:  self
-          }
-          Logger.success 'Network environment class initialized'
+          @logger = EveIRCInstaller::Logger.copy(who_rang: @pretty_name) do |config|
+            config.filters = ["logging"]
+          end
+
+          @logger.success 'Network environment class initialized', who_rang: @pretty_name
         end
 
         def do_check
@@ -38,8 +35,8 @@ module EveIRCInstaller
         
         # @return [Boolean] DNS connectivity to google.com established?
         def check_DNS
-
-          EveIRCInstaller::Logger.info 'Received call'
+  
+          Logger.info 'Received call to check DNS', who_rang: @pretty_name
 
 
         end
